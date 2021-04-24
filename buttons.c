@@ -1,6 +1,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
-
+//#include "inc/GPIO_DRIVER0.h"
 
 #define Display_CDD     DDB5
 #define Button_Sensor   DDB4
@@ -15,12 +15,12 @@ int main(void)
 	PORTB &= ~(_BV(Button_Sensor));	// no internal pull-up
 	DDRB &= ~(_BV(Heater));	// as input
 	PORTB &= ~(_BV(Heater));	//no internal pull-up
-    
+    MCUCR |= (_BV(PUD));	//tri-state
     while (1)
     {
-        if ( ((PINB&(_BV(Button_Sensor)))>>Button_Sensor) == 1 ){
-			if( ((PINB&(_BV(Heater)))>>Heater) == 1 ) PORTB |= (_BV(Display_CDD)); // Writing HIGH to glow LED
+        if ( ( ((PINB&(_BV(Button_Sensor)))>>Button_Sensor) == 1 ) && ( ((PINB&(_BV(Heater)))>>Heater) == 1 ) ){
+			 PORTB |= (_BV(Display_CDD)); 
 		}
-        else PORTB &= ~(_BV(Display_CDD)); // Writing LOW 
+        else PORTB &= ~(_BV(Display_CDD)); 
     }
 } 
