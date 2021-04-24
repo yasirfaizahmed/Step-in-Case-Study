@@ -16,9 +16,9 @@ all :
 	# main file obj creation
 	avr-gcc buttons.c -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o buttons.o  
 	# custom files obj creation	
-	#avr-gcc src/GPIO_DRIVER0.c -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o inc.o
+	avr-gcc src/GPIO_DRIVER0.c -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o lib.o
 	# linking them here to get executable
-	avr-gcc -mmcu=atmega328p buttons.o -o buttons
+	avr-gcc -mmcu=atmega328p buttons.o lib.o -o buttons
 	# converting executable to inter hex format
 	avr-objcopy -O ihex -R .eeprom buttons buttons.hex
 
