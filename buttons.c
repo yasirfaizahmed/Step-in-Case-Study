@@ -10,9 +10,11 @@
 
 int main(void)
 {
-    DDRB |= _BV(Display_CDD); // Configuring PB5 as Output
+    DDRB |= _BV(Display_CDD); // as input
     DDRB &= ~(_BV(Button_Sensor)); // Configuring PB4 as Input
-	DDRB &= ~(_BV(Heater));	// Configuring PB3 as Output
+	PORTB &= ~(_BV(Button_Sensor));	// no internal pull-up
+	DDRB &= ~(_BV(Heater));	// as input
+	PORTB &= ~(_BV(Heater));	//no internal pull-up
     
     while (1)
     {
