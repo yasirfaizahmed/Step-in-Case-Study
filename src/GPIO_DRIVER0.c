@@ -52,6 +52,14 @@ bool digitalRead(char port, short PIN){	//returns true if PIN is HIGH, else retu
 		case 'B':
 			return ( (PINB&(_BV(PIN))) >> PIN );
 			break;
+		case 'C':
+			return ( (PINC&(_BV(PIN))) >> PIN );
+			break;
+		case 'D':
+			return ( (PIND&(_BV(PIN))) >> PIN );
+			break;
+		default:
+			break;
 	}
 	
 	
