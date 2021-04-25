@@ -6,7 +6,7 @@ buttons.o :
 	$(CC) buttons.c -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o buttons.o  
 
 lib.o :
-	$(CC) src/GPIO_DRIVER0 -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o lib.o 
+	$(CC) src/GPIO_DRIVER0 -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o lib.o 
 	
 buttons.exe :
 	$(CC) -mmcu=atmega328p buttons.o -o $(OUTPUT_NAME)

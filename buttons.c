@@ -18,10 +18,8 @@ int main(void)
     //MCUCR |= (_BV(PUD));	//tri-state
     while (1)
     {
-        if ( ( ((PINB&(_BV(Button_Sensor)))>>Button_Sensor) == 1 ) && ( ((PINB&(_BV(Heater)))>>Heater) == 1 ) ){
-			//PORTB |= (_BV(Display_CDD)); 
-			digitalWrite('B', Display_CDD, HIGH);
-		}
+        if ( digitalRead('B', Button_Sensor) && digitalRead('B', Heater) ) digitalWrite('B', Display_CDD, HIGH);
+
         else digitalWrite('B', Display_CDD, LOW); 
     }
 } 

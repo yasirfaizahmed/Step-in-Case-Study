@@ -1,6 +1,7 @@
 #include "../inc/GPIO_DRIVER0.h"
 #include <avr/io.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 void pinMode(char port, short PIN, MODE mode){	//to set the mode of the GPIO pin
 	
@@ -31,9 +32,29 @@ void digitalWrite(char port, short PIN, STATE state){	//writes HIGH or LOW
 			if(state == HIGH)  PORTB |= (_BV(PIN));
 			if(state == LOW)   PORTB &= ~(_BV(PIN));
 			break;
+		case 'C':
+			if(state == HIGH)  PORTC |= (_BV(PIN));
+			if(state == LOW)   PORTC &= ~(_BV(PIN));
+			break;
+		case 'D':
+			if(state == HIGH)  PORTD |= (_BV(PIN));
+			if(state == LOW)   PORTD &= ~(_BV(PIN));
+			break;
 			
 		default:
 			break;
 	}
 
 }
+
+bool digitalRead(char port, short PIN){	//returns true if PIN is HIGH, else returns false
+	switch(port){
+		case 'B':
+			return ( (PINB&(_BV(PIN))) >> PIN );
+			break;
+	}
+	
+	
+}
+
+
