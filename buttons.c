@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "inc/GPIO_DRIVER0.h"
+#include "inc/ADC_DRIVER0.h"
 
 #define Display_CDD     DDB5
 #define Button_Sensor   DDB3	//something is wrong with my PORTB PIN4, so had to take PIN3
@@ -8,18 +9,25 @@
 #define Temp_Sensor     DDB1
 
 
-int main(void)
-{
-	pinMode('B', Display_CDD, OUTPUT);
-	pinMode('B', Button_Sensor, INPUT);
-	pinMode('B', Heater, INPUT);
+
+
+int main(void){	//main 
+	pinMode('B', Display_CDD, OUTPUT);	//as output
+	pinMode('B', Button_Sensor, INPUT);	//as input
+	pinMode('B', Heater, INPUT);	//as input
 	//PORTB &= ~(_BV(Button_Sensor));  // no internal pull-up
 	//PORTB &= ~(_BV(Heater));	//no internal pull-up
     //MCUCR |= (_BV(PUD));	//tri-state
-    while (1)
-    {
-        if ( digitalRead('B', Button_Sensor) && digitalRead('B', Heater) ) digitalWrite('B', Display_CDD, HIGH);
-
-        else digitalWrite('B', Display_CDD, LOW); 
-    }
+	while (1) loop();	//calling the loop
+ 
 } 
+
+void loop(void){	//driver loop
+	
+	//both Button_Sensor and Heater must be on to turn on the actual heater
+	if ( digitalRead('B', Button_Sensor) && digitalRead('B', Heater) ) digitalWrite('B', Display_CDD, HIGH);	//if both the buttons are pressed 
+	else digitalWrite('B', Display_CDD, LOW); 	//else 
+	
+	
+	
+}
