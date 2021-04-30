@@ -12,6 +12,13 @@
 uint16_t val = 0;
 void loop(void);
 
+/**
+ *  \brief main function
+ *  
+ *  \return returns 1
+ *  
+ *  \details hadles all the calling of other functions and the main loop
+ */
 int main(void){	//main 
 	pinMode('B', Display_CDD, OUTPUT);	//as output
 	pinMode('B', Button_Sensor, INPUT);	//as input
@@ -28,6 +35,13 @@ int main(void){	//main
  
 } 
 
+/**
+ *  \brief main loop
+ *  
+ *  \return void
+ *  
+ *  \details handles all the real-time updating data streams 
+ */
 void loop(void){	//driver loop
 	while(1){
 		//both Button_Sensor and Heater must be on to turn on the actual heater

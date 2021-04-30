@@ -23,6 +23,7 @@
 
 /************************* function prototyping ***************************/
 void ADC_init(uint8_t ADC_prescalar, uint8_t Vref);	//to set the ADC ready to start conversion
+
 uint16_t ADC_read(uint8_t channel);	//takes ADC_channel number, does the conversion, returns 16bit value (10bit significant only)
 
 #endif
