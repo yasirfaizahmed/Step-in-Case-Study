@@ -39,8 +39,8 @@ int main(void){	//main
 	//timer setup
 	TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);
 	TCCR2B = _BV(CS22);
-	OCR2A = 1000;
-	OCR2B = 100;
+	//OCR2A = 1000;
+	OCR2B = 150;	//at 58.9% DS
 	
 	///////////main loop 
 
@@ -58,6 +58,7 @@ int main(void){	//main
  *  \details handles all the real-time updating data streams 
  */
 void loop(void){	//driver loop
+	float maped_val = 0;
 	while(1){
 		//both Button_Sensor and Heater must be on to turn on the actual heater
 		if ( digitalRead('B', Button_Sensor) && digitalRead('B', Heater) ) digitalWrite('B', LED_Actuator, HIGH);	//if both the buttons are pressed 
@@ -65,7 +66,8 @@ void loop(void){	//driver loop
 		
 		potval = ADC_read(0);
 		
-		
+		maped_val = 0.25024 * potval;
+		OCR2B = (int)maped_val;
 		
 		UART_tx_10bit(potval);
 		
