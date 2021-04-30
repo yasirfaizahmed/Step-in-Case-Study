@@ -1,5 +1,6 @@
 *.o 
 *.exe
 *.hex
+main_op
 index/
 html/

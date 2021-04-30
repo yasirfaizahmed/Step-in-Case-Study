@@ -6,8 +6,8 @@
 /************************* Bit definitions ********************************/
 // Voltage Reference Selections for ADC
 #define Internal_Vref_off   (uint8_t) 0x00
-#define AVcc_external_AREF	(uint8_t) 0x01
-#define internal_1V_AREF    (uint8_t) 0x03
+#define AVcc_external_AREF	(uint8_t) 0x40
+#define internal_1V_AREF    (uint8_t) 0xC0
 
 //ADC Prescaler Selections
 #define PRE_2   (uint8_t) 0x01
@@ -18,7 +18,8 @@
 #define PRE_64  (uint8_t) 0x06
 #define PRE_128 (uint8_t) 0x07
 
-
+//custom definitions
+#define POT 10000
 
 
 /************************* function prototyping ***************************/

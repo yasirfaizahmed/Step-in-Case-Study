@@ -28,5 +28,30 @@ void UART_init(uint16_t ubrr){	//init function
  */
 void UART_tx(uint8_t data){	//tx functin
     UDR0 = data;	//send data
-	_delay_ms(100);	// wait for transmit buffer to be empty
+	while( !( UCSR0A & (_BV(UDRE0))) );	// wait for transmit buffer to be empty
+}
+
+void UART_tx_10bit(uint16_t ADC_10_bit){
+	uint8_t ones = 0, tens = 0, hundreds = 0, thousands = 0;
+	uint16_t temp = ADC_10_bit;	//temporary 
+	ones = temp % 10;
+	temp /= 10;
+	tens = temp % 10;
+	temp /= 10;
+	hundreds = temp % 10;
+	thousands = temp/10;
+	
+	//HEX to ASCII
+	ones += 0x30;
+	tens += 0x30;
+	hundreds += 0x30;
+	thousands += 0x30;
+	
+	//Transmitting
+	UART_tx(thousands);
+	UART_tx(hundreds);
+	UART_tx(tens);
+	UART_tx(ones);
+	
+	UART_tx('\n');
 }

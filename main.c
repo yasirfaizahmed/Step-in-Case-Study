@@ -4,13 +4,16 @@
 #include "inc/ADC_DRIVER0.h"
 #include "inc/UART_DRIVER0.h"
 
-#define Display_CDD     DDB5
-#define Button_Sensor   DDB3	//something is wrong with my PORTB PIN4, so had to take PIN3
-#define Heater          DDB2
-#define Temp_Sensor     DDB1
+#define LED_Actuator    DDB5	//builtin-led @ pin13
+#define Button_Sensor   DDB3	//Button sensor
+#define Heater          DDB2	//Heater button 
+#define Temp_Sensor     DDC0	//Analog o/pting temp sensor to uC analog pin
 
-uint16_t val = 0;
-void loop(void);
+uint16_t potval  = 0;	//global var for temp value
+
+void loop(void);	//main loop prototyping
+
+
 
 /**
  *  \brief main function
@@ -20,7 +23,7 @@ void loop(void);
  *  \details hadles all the calling of other functions and the main loop
  */
 int main(void){	//main 
-	pinMode('B', Display_CDD, OUTPUT);	//as output
+	pinMode('B', LED_Actuator, OUTPUT);	//as output
 	pinMode('B', Button_Sensor, INPUT);	//as input
 	pinMode('B', Heater, INPUT);	//as input
 	//PORTB &= ~(_BV(Button_Sensor));  // no internal pull-up
@@ -31,7 +34,14 @@ int main(void){	//main
 	
 	UART_init(103);	//9600 BR
 	
-	loop();	//calling the loop
+		
+	
+	
+	///////////main loop 
+
+					loop();	//calling the loop
+					
+	///////////main loop 
  
 } 
 
@@ -45,13 +55,11 @@ int main(void){	//main
 void loop(void){	//driver loop
 	while(1){
 		//both Button_Sensor and Heater must be on to turn on the actual heater
-		if ( digitalRead('B', Button_Sensor) && digitalRead('B', Heater) ) digitalWrite('B', Display_CDD, HIGH);	//if both the buttons are pressed 
-		else digitalWrite('B', Display_CDD, LOW); 	//else 
+		if ( digitalRead('B', Button_Sensor) && digitalRead('B', Heater) ) digitalWrite('B', LED_Actuator, HIGH);	//if both the buttons are pressed 
+		else digitalWrite('B', LED_Actuator, LOW); 	//else 
 		
-		val = ADC_read(0);	//reading from channel 0
-		
-		uint8_t data = 0x69;
-		UART_tx(data);
+		potval = ADC_read(0);
+		UART_tx_10bit(potval);
 		
 	}
 }
