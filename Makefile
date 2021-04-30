@@ -1,27 +1,33 @@
 CC = avr-gcc
-PROJECT_NAME = buttons
-OUTPUT_NAME = buttons_op
+PROJECT_NAME = main
+OUTPUT_NAME = main_op
 
 all :	
 	# main file obj creation
-	$(CC) buttons.c -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o buttons.o  
+	$(CC) $(PROJECT_NAME).c -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o $(PROJECT_NAME).o  
 	# custom files obj creation	
-	$(CC) src/GPIO_DRIVER0.c -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o lib.o
+	$(CC) src/GPIO_DRIVER0.c -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o GPIO.o
+	$(CC) src/ADC_DRIVER0.c -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o ADC.o
+	$(CC) src/UART_DRIVER0.c -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o UART.o
 	# linking them here to get executable
-	$(CC) -mmcu=atmega328p buttons.o lib.o -o $(OUTPUT_NAME)
+	$(CC) -mmcu=atmega328p $(PROJECT_NAME).o GPIO.o ADC.o UART.o -o $(OUTPUT_NAME)
 	# converting executable to inter hex format
 	avr-objcopy -O ihex -R .eeprom $(OUTPUT_NAME) $(OUTPUT_NAME).hex
 
-buttons.o : 
-	$(CC) buttons.c -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o buttons.o  
+main.o : 
+	$(CC) $(PROJECT_NAME).c -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o $(PROJECT_NAME).o  
 
-lib.o :
-	$(CC) src/GPIO_DRIVER0 -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o lib.o 
+GPIO.o :
+	$(CC) src/GPIO_DRIVER0 -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o GPIO.o 
+ADC.o :
+	$(CC) src/ADC_DRIVER0 -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o ADC.o
+UART.o :
+	$(CC) src/UART_DRIVER0 -I inc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o UART.o
 	
-buttons.exe :
-	$(CC) -mmcu=atmega328p buttons.o -o $(OUTPUT_NAME)
+main.exe :
+	$(CC) -mmcu=atmega328p $(PROJECT_NAME).o GPIO.o ADC.o UART.o -o $(OUTPUT_NAME)
 	
-buttons.hex :
+main.hex :
 	avr-objcopy -O ihex -R .eeprom buttons $(OUTPUT_NAME).hex
 	
 dump :
@@ -30,12 +36,13 @@ dump :
 	
 # optimizations
 cppcheck : 
-	cppcheck --enable=all buttons.c src/GPIO_DRIVER0.c 
+	cppcheck --enable=all $(PROJECT_NAME).c src/GPIO_DRIVER0.c 
 	
 clean :
 	rm $(OUTPUT_NAME)
-	rm buttons.o
+	rm $(PROJECT_NAME).o
 	rm $(OUTPUT_NAME).hex
-	rm lib.o
-	
+	rm GPIO.o
+	rm ADC.o
+	rm UART.o
 	
