@@ -31,6 +31,14 @@ void UART_tx(uint8_t data){	//tx functin
 	while( !( UCSR0A & (_BV(UDRE0))) );	// wait for transmit buffer to be empty
 }
 
+/**
+ *  \brief This function transmits 10bit value through UART
+ *  
+ *  \param [in] ADC_10_bit uint16_t data-value to transmit
+ *  \return void
+ *  
+ *  \details More details
+ */
 void UART_tx_10bit(uint16_t ADC_10_bit){
 	uint8_t ones = 0, tens = 0, hundreds = 0, thousands = 0;
 	uint16_t temp = ADC_10_bit;	//temporary 
