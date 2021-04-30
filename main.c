@@ -8,6 +8,7 @@
 #define Button_Sensor   DDB3	//Button sensor
 #define Heater          DDB2	//Heater button 
 #define Temp_Sensor     DDC0	//Analog o/pting temp sensor to uC analog pin
+#define PWM_op			DDD3 	//PWM o/p depending on the temp_sensor value 
 
 uint16_t potval  = 0;	//global var for temp value
 
@@ -29,13 +30,17 @@ int main(void){	//main
 	//PORTB &= ~(_BV(Button_Sensor));  // no internal pull-up
 	//PORTB &= ~(_BV(Heater));	//no internal pull-up
     //MCUCR |= (_BV(PUD));	//tri-state
+	pinMode('D', PWM_op, OUTPUT);	//as output
 	
 	ADC_init(PRE_128, AVcc_external_AREF);	//slowest speed sys_clock/128 and external Vref pin 
 	
 	UART_init(103);	//9600 BR
 	
-		
-	
+	//timer setup
+	TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);
+	TCCR2B = _BV(CS22);
+	OCR2A = 1000;
+	OCR2B = 100;
 	
 	///////////main loop 
 
@@ -59,6 +64,9 @@ void loop(void){	//driver loop
 		else digitalWrite('B', LED_Actuator, LOW); 	//else 
 		
 		potval = ADC_read(0);
+		
+		
+		
 		UART_tx_10bit(potval);
 		
 	}
